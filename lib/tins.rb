@@ -58,5 +58,7 @@ module Tins
   require 'tins/temp_io'
   require 'tins/temp_io_enum'
   require 'tins/lru_cache'
+  require 'tins/deprecate'
+  require 'tins/hash_bfs'
 end
 require 'tins/alias'

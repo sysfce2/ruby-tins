@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'tempfile'
-require 'tins'
+require 'pathname'
 
 module Tins
   class TinsSecureWriteTest < Test::Unit::TestCase
@@ -13,6 +13,11 @@ module Tins
       assert_equal 4, A.secure_write(fn = File.join(Dir.tmpdir, "A_file.#$$")) { |f| f.write('test') }
       assert_equal 'test', File.read(fn)
       assert_raise(ArgumentError) { A.secure_write }
+    end
+
+    def test_secure_write_with_pathname
+      assert_equal 4, A.secure_write(fn = Pathname.new(Dir.tmpdir).join("A_file.#$$"), 'test')
+      assert_equal 'test', File.read(fn)
     end
 
     module B

@@ -1,3 +1,4 @@
+require 'tins/string_version'
 require 'tins/uniq_by'
 
 module Tins
@@ -6,10 +7,19 @@ module Tins
   end
 
   class ::Array
-    include UniqBy
+    if Tins::StringVersion.compare(RUBY_VERSION, :<=, "1.8")
+      include UniqBy
 
-    def uniq_by!(&b)
-      replace uniq_by(&b)
+      def uniq_by!(&b)
+        replace uniq_by(&b)
+      end
+    else
+      require 'tins/deprecate'
+      extend Tins::Deprecate
+
+      deprecate method:
+        alias_method(:uniq_by!, :uniq!),
+        new_method: :uniq!
     end
   end
 end
